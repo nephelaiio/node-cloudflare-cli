@@ -1,4 +1,4 @@
-.PHONY: install lint eslint prettier format build test vitest check run
+.PHONY: install lint eslint prettier format build webpack test vitest check run
 
 ifneq (,$(wildcard ./.env))
     include .env
@@ -6,7 +6,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 install:
-	npm ci
+	@npm ci 2>&1 >/dev/null
 
 eslint: install
 	@npx eslint . --ext .ts
@@ -24,13 +24,15 @@ build: install ${BUNDLE}
 clean:
 	@rm -rf ${BUNDLE}
 
+webpack: clean ${BUNDLE}
+
 ${BUNDLE}:
 	npx webpack --mode production
 
 test: vitest check
 
 vitest:
-	@npx vitest run
+	@npx vitest run --passWithNoTests
 
 check: ${BUNDLE}
 	${BUNDLE} --version 2>&1 >/dev/null
@@ -39,7 +41,7 @@ check: ${BUNDLE}
 	${BUNDLE} zone --help 2>&1 >/dev/null
 
 run: build
-	${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
+	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
 
 %:
 	@:

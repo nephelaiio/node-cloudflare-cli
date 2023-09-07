@@ -26,8 +26,8 @@ export default {
     extensions: ['.ts', '.js']
   },
   output: {
-    filename: path.basename(process.env.BUNDLE),
-    path: path.resolve(process.cwd(), path.dirname(process.env.BUNDLE))
+    filename: path.basename(`${process.env.BUNDLE}`),
+    path: path.resolve(process.cwd(), path.dirname(`${process.env.BUNDLE}`))
   },
   optimization: {
     minimizer: []
