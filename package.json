@@ -1,0 +1,45 @@
+{
+  "name": "@nephelaiio/cloudflare-cli",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Simple CLI wrapper for Cloudflare v4 API",
+  "main": "cli.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nephelaiio/node-cloudflare-cli.git"
+  },
+  "bin": {
+    "cfcli": "./dist/deploy.cjs"
+  },
+  "keywords": [
+    "cloudflare",
+    "cli",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nephelaiio/node-cloudflare-cli/issues"
+  },
+  "homepage": "https://github.com/nephelaiio/node-cloudflare-cli#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "esbuild": "^0.19.2",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.3",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-shell-plugin-next": "^2.3.1"
+  },
+  "dependencies": {
+    "@nephelaiio/cloudflare-api": "^0.0.3",
+    "@nephelaiio/logger": "^0.0.6",
+    "@typescript-eslint/parser": "^6.6.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
