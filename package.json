@@ -1,6 +1,6 @@
 {
   "name": "@nephelaiio/cloudflare-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Simple CLI wrapper for Cloudflare v4 API",
   "main": "cli.js",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/nephelaiio/node-cloudflare-cli.git"
   },
   "bin": {
-    "cfcli": "./dist/deploy.cjs"
+    "cfcli": "./deploy.cjs"
   },
   "keywords": [
     "cloudflare",
