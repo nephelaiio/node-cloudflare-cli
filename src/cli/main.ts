@@ -1,4 +1,4 @@
-import { Command, Option } from 'commander';
+import { Command } from 'commander';
 import { setVerbose, setQuiet } from '@nephelaiio/logger';
 import { zone } from './zone'
 
