@@ -2,7 +2,6 @@ import { Command } from 'commander';
 import { debug } from '@nephelaiio/logger';
 
 const zone = (program: Command) => {
-
   const command = program.command('zone');
 
   command.command('list').action(async (_) => {
@@ -11,7 +10,6 @@ const zone = (program: Command) => {
     };
     await action();
   });
-
-}
+};
 
 export { zone };
