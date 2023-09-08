@@ -6,6 +6,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 BASENAME ::= $$(basename $${BUNDLE})
+COMMAND ::= $$(jq .name < package.json -r | sed -e 's/^[^/]*\///')
 
 install:
 	@npm ci 2>&1 >/dev/null
@@ -32,7 +33,11 @@ ${BUNDLE}:
 	npx webpack --mode production
 
 package: ${BUNDLE}
-	jq -s ".[0] * {\"bin\": { \"cli\": \"${BASENAME}\"}}" package.json > $$(dirname $<)/package.json
+	jq -s ".[0] * {\"bin\": { \"${COMMAND}\": \"${BASENAME}\"}}" package.json \
+		> $$(dirname $<)/package.json
+
+echo:
+	echo ${NAME}
 
 test: vitest check
 
