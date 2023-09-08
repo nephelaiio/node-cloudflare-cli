@@ -1,6 +1,6 @@
 {
   "name": "@nephelaiio/cloudflare-cli",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "description": "Simple CLI wrapper for Cloudflare v4 API",
   "main": "cli.js",
