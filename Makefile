@@ -5,6 +5,8 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
+CLI ::= $(basename ${BUNDLE})
+
 install:
 	@npm ci 2>&1 >/dev/null
 
@@ -24,11 +26,13 @@ build: install ${BUNDLE}
 clean:
 	@rm -rf $$(dirname ${BUNDLE})
 
-webpack: clean ${BUNDLE}
+webpack: clean package
 
 ${BUNDLE}:
 	npx webpack --mode production
-	cp package.json $$(dirname $@)
+
+package: ${BUNDLE}
+	jq -s ".[0] * {\"bin\": { \"cli\": \"$${CLI}\"}}" package.json
 
 test: vitest check
 
