@@ -28,6 +28,7 @@ webpack: clean ${BUNDLE}
 
 ${BUNDLE}:
 	npx webpack --mode production
+	cp package.json $(dirname $${BUNDLE})
 
 test: vitest check
 
