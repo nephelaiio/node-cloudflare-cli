@@ -22,7 +22,7 @@ format: install
 build: install ${BUNDLE}
 
 clean:
-	@rm -rf ${BUNDLE}
+	@rm -rf $$(dirname ${BUNDLE})
 
 webpack: clean ${BUNDLE}
 
