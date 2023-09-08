@@ -30,14 +30,11 @@ clean:
 webpack: clean package
 
 ${BUNDLE}:
-	npx webpack --mode production
+	@npx webpack --mode production
 
 package: ${BUNDLE}
-	jq -s ".[0] * {\"bin\": { \"${COMMAND}\": \"${BASENAME}\"}}" package.json \
+	@jq -s ".[0] * {\"bin\": { \"${COMMAND}\": \"${BASENAME}\"}}" package.json \
 		> $$(dirname $<)/package.json
-
-echo:
-	echo ${NAME}
 
 test: vitest check
 
