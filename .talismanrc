@@ -1,5 +1,7 @@
 fileignoreconfig:
   - filename: .env
     ignore_detectors: [filename]
+  - filename: package.json
+    ignore_detectors: [filecontent]
   - filename: package-lock.json
     ignore_detectors: [filecontent]
