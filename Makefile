@@ -21,7 +21,7 @@ lint: eslint prettier
 format: install
 	@npx prettier --write .
 
-build: install ${BUNDLE}
+build: install package
 
 clean:
 	@rm -rf $$(dirname ${BUNDLE})
