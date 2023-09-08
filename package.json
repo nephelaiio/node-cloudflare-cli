@@ -38,6 +38,7 @@
     "webpack-shell-plugin-next": "^2.3.1"
   },
   "dependencies": {
+    "@nephelaiio/logger": "^0.0.6",
     "@typescript-eslint/parser": "^6.6.0",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1"
