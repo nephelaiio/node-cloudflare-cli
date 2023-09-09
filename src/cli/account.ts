@@ -1,16 +1,16 @@
 import { Command } from 'commander';
-import { apiToken } from './environment';
 import { api } from '@nephelaiio/cloudflare-api'
+import { apiToken } from './environment';
 
-const zone = (program: Command) => {
-  const command = program.command('zone');
+const account = (program: Command) => {
+  const command = program.command('account');
 
   command.command('list').action(async (_) => {
     const token = apiToken();
-    const path = `/zones`;
+    const path = `/accounts`;
     const zones = await api({ token, path});
-    console.log(JSON.stringify(zones))
+    console.log(JSON.stringify(zones));
   });
 };
 
-export { zone };
+export { account };

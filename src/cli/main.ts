@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import { setVerbose, setQuiet, debug, error } from '@nephelaiio/logger';
 import { init as initEnvironment } from './environment'
 import { zone } from './zone';
+import { account } from './account';
 
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
@@ -30,6 +31,7 @@ async function main() {
     });
 
   zone(program);
+  account(program);
 
   program.parse(process.argv);
 }
