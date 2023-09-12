@@ -1,4 +1,4 @@
-.PHONY: install lint eslint prettier format build webpack test vitest check run
+.PHONY: install lint eslint prettier format build bundle test vitest check run
 
 ifneq (,$(wildcard ./.env))
     include .env
@@ -22,17 +22,16 @@ lint: eslint prettier
 format: install
 	@npx prettier --write .
 
-build: install package
+build: install bundle
 
 clean:
 	@rm -rf $$(dirname ${BUNDLE})
 
-webpack: clean package
-
 ${BUNDLE}:
 	@npx webpack --mode production
 
-package: ${BUNDLE}
+bundle: ${BUNDLE}
+	@chmod +x $<
 	@jq -s ".[0] * {\"bin\": { \"${COMMAND}\": \"${BASENAME}\"}}" package.json \
 		> $$(dirname $<)/package.json
 
@@ -46,6 +45,10 @@ check: ${BUNDLE}
 	${BUNDLE} --help 2>&1 >/dev/null
 	${BUNDLE} --help --verbose 2>&1 >/dev/null
 	${BUNDLE} zone --help 2>&1 >/dev/null
+	${BUNDLE} waf --help 2>&1 >/dev/null
+	${BUNDLE} waf package --help 2>&1 >/dev/null
+	${BUNDLE} waf package list --help 2>&1 >/dev/null
+	${BUNDLE} waf package rules --help 2>&1 >/dev/null
 
 run: build
 	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))

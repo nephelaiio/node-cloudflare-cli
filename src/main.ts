@@ -1,8 +1,9 @@
 import { Command } from 'commander';
-import { setVerbose, setQuiet, debug, error } from '@nephelaiio/logger';
-import { init as initEnvironment } from './environment'
+import { setVerbose, setInfo, setQuiet } from '@nephelaiio/logger';
+import { init as initEnvironment } from './environment';
 import { zone } from './zone';
 import { account } from './account';
+import { waf } from './waf';
 
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
@@ -22,8 +23,10 @@ async function main() {
     .helpOption('-h, --help', 'output usage information')
     .option('-v, --verbose', 'verbosity that can be increased', verbose, 0)
     .hook('preAction', async (program, _) => {
-      if (program.opts().verbose > 0) {
+      if (program.opts().verbose > 1) {
         setVerbose();
+      } else if (program.opts().verbose == 1) {
+        setInfo();
       } else {
         setQuiet();
       }
@@ -32,6 +35,7 @@ async function main() {
 
   zone(program);
   account(program);
+  waf(program);
 
   program.parse(process.argv);
 }

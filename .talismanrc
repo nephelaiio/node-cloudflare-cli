@@ -1,6 +1,8 @@
 fileignoreconfig:
   - filename: .env
     ignore_detectors: [filename]
+  - filename: src/environment.ts
+    ignore_detectors: [filename]
   - filename: src/cli/environment.ts
     ignore_detectors: [filename]
   - filename: package.json
