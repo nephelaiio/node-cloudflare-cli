@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
