@@ -1,26 +1,27 @@
-.PHONY: install lint eslint prettier format build bundle test vitest check run
+.PHONY: install lint eslint prettier format build bundle test check run
 
 ifneq (,$(wildcard ./.env))
     include .env
     export
 endif
 
+VERSION ::= $$(jq .version < package.json -r)
 BASENAME ::= $$(basename $${BUNDLE})
 COMMAND ::= $$(jq .name < package.json -r | sed -e 's/^[^/]*\///')
 
 install:
-	@npm ci 2>&1 >/dev/null
+	@bun install
 
 eslint: install
-	@npx eslint . --ext .ts
+	@bunx eslint . --ext .ts
 
 prettier: install
-	@npx prettier --check .
+	@bunx prettier --check .
 
 lint: eslint prettier
 
 format: install
-	@npx prettier --write .
+	@bunx prettier --write .
 
 build: install bundle
 
@@ -28,30 +29,36 @@ clean:
 	@rm -rf $$(dirname ${BUNDLE})
 
 ${BUNDLE}:
-	@npx webpack --mode production
+	bun build ${SOURCE} \
+		--outfile=${BUNDLE} \
+		--target=node \
+		--external=commander \
+		--external==dotenv \
+		--define __VERSION__:${VERSION} \
+		--external "@nephelaiio/cloudflare-api" \
+		--external "@nephelaiio/logger"
 
 bundle: ${BUNDLE}
-	@chmod +x $<
 	@jq -s ".[0] * {\"bin\": { \"${COMMAND}\": \"${BASENAME}\"}}" package.json \
 		> $$(dirname $<)/package.json
 
-test: vitest check
+test: check unit
 
-vitest:
-	@npx vitest run --passWithNoTests
+unit:
+	bun test
 
 check: ${BUNDLE}
-	${BUNDLE} --version 2>&1 >/dev/null
-	${BUNDLE} --help 2>&1 >/dev/null
-	${BUNDLE} --help --verbose 2>&1 >/dev/null
-	${BUNDLE} zone --help 2>&1 >/dev/null
-	${BUNDLE} waf --help 2>&1 >/dev/null
-	${BUNDLE} waf package --help 2>&1 >/dev/null
-	${BUNDLE} waf package list --help 2>&1 >/dev/null
-	${BUNDLE} waf package rules --help 2>&1 >/dev/null
+	make run -- --version 2>&1 >/dev/null
+	make run -- --help 2>&1 >/dev/null
+	make run -- --help --verbose 2>&1 >/dev/null
+	make run -- zone --help 2>&1 >/dev/null
+	make run -- waf --help 2>&1 >/dev/null
+	make run -- waf package --help 2>&1 >/dev/null
+	make run -- waf package list --help 2>&1 >/dev/null
+	make run -- waf package rules --help 2>&1 >/dev/null
 
-run: build
-	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
+run:
+	node ${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
 
 %:
 	@:
