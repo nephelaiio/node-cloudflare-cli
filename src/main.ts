@@ -1,5 +1,7 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
-import { setVerbose, setInfo, setQuiet } from '@nephelaiio/logger';
+import { setInfo, setQuiet, setVerbose } from '@nephelaiio/logger';
 import { init as initEnvironment } from './environment';
 import { zone } from './zone';
 import { account } from './account';
@@ -8,7 +10,6 @@ import { waf } from './waf';
 async function main() {
   const program = new Command();
   const verbose = (_, v) => v + 1;
-  const _checks: Promise<void>[] = [];
 
   program
     .version(__VERSION__, '--version', 'output the current version')
