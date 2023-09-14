@@ -1,11 +1,11 @@
 fileignoreconfig:
   - filename: .env
     ignore_detectors: [filename]
+  - filename: bun.lockb
+    ignore_detectors: [filecontent]
   - filename: src/environment.ts
     ignore_detectors: [filename]
   - filename: src/cli/environment.ts
     ignore_detectors: [filename]
   - filename: package.json
-    ignore_detectors: [filecontent]
-  - filename: package-lock.json
     ignore_detectors: [filecontent]
