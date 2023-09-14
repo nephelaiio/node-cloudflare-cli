@@ -58,7 +58,7 @@ check: ${BUNDLE}
 	make run -- waf package rules --help 2>&1 >/dev/null
 
 run:
-	node ${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
+	${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
 
 %:
 	@:
