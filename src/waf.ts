@@ -22,7 +22,7 @@ const wafPackageList: (options: PackageOptions) => Promise<any> = async (
   info(message);
   const { zone = null, packageName = null } = options;
   const token = apiToken();
-  const zones = () => zone ? zoneInfo(zone) : zoneList();
+  const zones = () => (zone ? zoneInfo(zone) : zoneList());
   const packageQuery = (await zones()).map(async (z) => {
     const zoneId = (await z).id;
     const zoneName = (await z).name;
@@ -94,21 +94,28 @@ const packageAction = (command: Command, action: string) => {
     );
 };
 
-const wafRulesetList: (zone: string | null, ruleset: string | null) => Promise<any> = async (zone, ruleset) => {
+const wafRulesetList: (
+  zone: string | null,
+  ruleset: string | null
+) => Promise<any> = async (zone, ruleset) => {
   const zoneMessage = zone ? `zone ${zone}` : 'all zones';
   info(`Fetching waf ruleset for ${zoneMessage}`);
   const token = apiToken();
-  const zones = () => zone ? zoneInfo(zone) : zoneList();
+  const zones = () => (zone ? zoneInfo(zone) : zoneList());
   const rulesetQuery = (await zones()).map(async (z) => {
     const zoneId = (await z).id;
     const zoneName = (await z).name;
-    const addZoneInfo = (p: any) => ({ ...p, ...{ zone_name: zoneName, zone_id: zoneId } });
+    const addZoneInfo = (p: any) => ({
+      ...p,
+      ...{ zone_name: zoneName, zone_id: zoneId }
+    });
     const path = `/zones/${zoneId}/rulesets?per_page=50`;
     const result = (await api({ token, path })).result;
     return result.map(addZoneInfo);
   });
   const rulesetList = (await Promise.all(rulesetQuery)).flat();
-  const rulesets = () => ruleset ? rulesetList.filter((r) => r.phase == ruleset) : rulesetList;
+  const rulesets = () =>
+    ruleset ? rulesetList.filter((r) => r.phase == ruleset) : rulesetList;
   return rulesets();
 };
 const wafRulesetRules: (
@@ -123,7 +130,10 @@ const wafRulesetRules: (
     const zoneId = (await z).zone_id;
     const rulesetId = (await z).id;
     const zoneName = (await z).zone_name;
-    const addZoneInfo = (p: any) => ({ ...p, ...{ zone_name: zoneName, zone_id: zoneId, ruleset_id: rulesetId } });
+    const addZoneInfo = (p: any) => ({
+      ...p,
+      ...{ zone_name: zoneName, zone_id: zoneId, ruleset_id: rulesetId }
+    });
     const path = `/zones/${zoneId}/rulesets/phases/${ruleset}/entrypoint?per_page=50`;
     const result = (await api({ token, path })).result;
     return result.rules.map(addZoneInfo);
