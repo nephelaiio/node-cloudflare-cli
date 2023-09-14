@@ -14,6 +14,12 @@ async function zoneList(zone: string | null = null) {
   return zones.result;
 }
 
+async function zoneInfo(zone: string) {
+  const token = apiToken();
+  const zones = await api({ token, path: `/zones?name=${zone}` });
+  return zones.result;
+}
+
 const zone = (program: Command) => {
   const command = program.command('zone');
 
@@ -31,10 +37,10 @@ const zone = (program: Command) => {
     .action(
       async (zone) =>
         await attempt(async () => {
-          const zones = await zoneList(zone);
+          const zones = await zoneInfo(zone);
           console.log(JSON.stringify(zones));
         })
     );
 };
 
-export { zone, zoneList };
+export { zone, zoneList, zoneInfo };

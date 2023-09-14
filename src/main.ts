@@ -5,14 +5,7 @@ import { zone } from './zone';
 import { account } from './account';
 import { waf } from './waf';
 
-import * as fs from 'fs';
-import * as dotenv from 'dotenv';
-
 async function main() {
-  const envFile = `${process.cwd()}/.env`;
-  if (fs.existsSync(envFile)) {
-    dotenv.config({ path: envFile });
-  }
   const program = new Command();
   const verbose = (_, v) => v + 1;
   const _checks: Promise<void>[] = [];

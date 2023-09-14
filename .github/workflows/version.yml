@@ -21,8 +21,16 @@ jobs:
         if: steps.check.outputs.changed != 'true'
         run: exit 1
 
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
       - name: Install dependencies
         run: sudo apt-get install -y make
+
+      - name: Build project
+        run: make build
 
       - name: Run version check
         run: make run -- --version
