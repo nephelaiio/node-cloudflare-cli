@@ -154,40 +154,40 @@ const waf = (program: Command) => {
   packageAction(pkgCommand, 'list')
     .option('-z, --zone <string>', undefined)
     .action(
-    async (options: any) =>
-      await attempt(async () => {
-        const zone = options.zone;
-        debug(
-          `Fetching waf packages for zone ${zone} matching name '${packageName(
-            options
-          )}'`
-        );
-        const result = await wafPackageList({
-          zone,
-          packageName: packageName(options)
-        });
-        console.log(JSON.stringify(result));
-      })
-  );
+      async (options: any) =>
+        await attempt(async () => {
+          const zone = options.zone;
+          debug(
+            `Fetching waf packages for zone ${zone} matching name '${packageName(
+              options
+            )}'`
+          );
+          const result = await wafPackageList({
+            zone,
+            packageName: packageName(options)
+          });
+          console.log(JSON.stringify(result));
+        })
+    );
 
   packageAction(pkgCommand, 'rules')
     .option('-z, --zone <string>', undefined)
     .action(
-    async (options: any) =>
-      await attempt(async () => {
-        const zone = options.zone;
-        debug(
-          `Fetching waf package rules for zone ${zone} matching name '${packageName(
-            options
-          )}'`
-        );
-        const result = await wafPackageRules({
-          zone,
-          packageName: packageName(options)
-        });
-        console.log(JSON.stringify(result));
-      })
-  );
+      async (options: any) =>
+        await attempt(async () => {
+          const zone = options.zone;
+          debug(
+            `Fetching waf package rules for zone ${zone} matching name '${packageName(
+              options
+            )}'`
+          );
+          const result = await wafPackageRules({
+            zone,
+            packageName: packageName(options)
+          });
+          console.log(JSON.stringify(result));
+        })
+    );
 
   rulesetAction(rsCommand, 'list')
     .option('-z, --zone <string>', undefined)
