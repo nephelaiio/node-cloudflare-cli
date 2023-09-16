@@ -151,7 +151,9 @@ const waf = (program: Command) => {
   const pkgCommand = wafCommand.command('package');
   const rsCommand = wafCommand.command('ruleset');
 
-  packageAction(pkgCommand, 'list').action(
+  packageAction(pkgCommand, 'list')
+    .option('-z, --zone <string>', undefined)
+    .action(
     async (options: any) =>
       await attempt(async () => {
         const zone = options.zone;
@@ -168,7 +170,9 @@ const waf = (program: Command) => {
       })
   );
 
-  packageAction(pkgCommand, 'rules').action(
+  packageAction(pkgCommand, 'rules')
+    .option('-z, --zone <string>', undefined)
+    .action(
     async (options: any) =>
       await attempt(async () => {
         const zone = options.zone;
