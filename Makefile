@@ -1,10 +1,11 @@
-.PHONY: install lint eslint prettier format build bundle test check run
+.PHONY: install lint eslint prettier format build bundle test check check_help check_run run
 
 ifneq (,$(wildcard ./.env))
     include .env
     export
 endif
 
+SHELL = /bin/bash
 VERSION ::= $$(jq .version < package.json -r)
 BASENAME ::= $$(basename $${BUNDLE})
 COMMAND ::= $$(jq .name < package.json -r | sed -e 's/^[^/]*\///')
@@ -47,18 +48,23 @@ test: check unit
 unit:
 	bun test
 
-check: ${BUNDLE}
-	make run -- --version 2>&1 >/dev/null
-	make run -- --help 2>&1 >/dev/null
-	make run -- --help --verbose 2>&1 >/dev/null
-	make run -- zone --help 2>&1 >/dev/null
-	make run -- waf --help 2>&1 >/dev/null
-	make run -- waf package --help 2>&1 >/dev/null
-	make run -- waf package list --help 2>&1 >/dev/null
-	make run -- waf package rules --help 2>&1 >/dev/null
+check: check_help check_run
+
+check_help: ${BUNDLE}
+	make --no-print-directory run -- --version 2>&1 >/dev/null
+	make --no-print-directory run -- --help 2>&1 >/dev/null
+	make --no-print-directory run -- --help --verbose 2>&1 >/dev/null
+	make --no-print-directory run -- zone --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf package --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf package list --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf package rules --help 2>&1 >/dev/null
+
+check_run: ${BUNDLE}
+	diff <(make --no-print-directory run -- zone list --verbose | jq '. | length > 0') <(echo true)
 
 run:
-	${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
+	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
 
 %:
 	@:
