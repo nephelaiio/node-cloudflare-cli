@@ -5,6 +5,7 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
+SHELL = /bin/bash
 VERSION ::= $$(jq .version < package.json -r)
 BASENAME ::= $$(basename $${BUNDLE})
 COMMAND ::= $$(jq .name < package.json -r | sed -e 's/^[^/]*\///')
@@ -48,17 +49,20 @@ unit:
 	bun test
 
 check: ${BUNDLE}
-	make run -- --version 2>&1 >/dev/null
-	make run -- --help 2>&1 >/dev/null
-	make run -- --help --verbose 2>&1 >/dev/null
-	make run -- zone --help 2>&1 >/dev/null
-	make run -- waf --help 2>&1 >/dev/null
-	make run -- waf package --help 2>&1 >/dev/null
-	make run -- waf package list --help 2>&1 >/dev/null
-	make run -- waf package rules --help 2>&1 >/dev/null
+	make --no-print-directory run -- --version 2>&1 >/dev/null
+	make --no-print-directory run -- --help 2>&1 >/dev/null
+	make --no-print-directory run -- --help --verbose 2>&1 >/dev/null
+	make --no-print-directory run -- zone --help 2>&1 >/dev/null
+	diff <(make --no-print-directory run -- zone list | jq '. | length > 0') <(echo true)
+	make --no-print-directory run -- waf --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf package --help 2>&1 >/dev/null
+	make --no-print-directory run -- waf package list --help 2>&1 >/dev/null
+	diff <(make --no-print-directory run -- waf package list | jq '. | length > 0') <(echo true)
+	make --no-print-directory run -- waf package rules --help 2>&1 >/dev/null
+	diff <(make --no-print-directory run -- waf package rules | jq '. | length > 0') <(echo true)
 
 run:
-	${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
+	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
 
 %:
 	@:
