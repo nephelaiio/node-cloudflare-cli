@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Command } from 'commander';
 import { debug, info } from '@nephelaiio/logger';
-import { api } from '@nephelaiio/cloudflare-api';
-import { zoneList, zoneInfo } from './zone';
+import { api, zoneInfo } from '@nephelaiio/cloudflare-api';
 
 import { apiToken } from './environment';
 import { attempt } from './utils';
+
+const token = apiToken();
 
 const wafRulesetList: (
   zone: string | null,
@@ -13,8 +14,7 @@ const wafRulesetList: (
 ) => Promise<any> = async (zone, ruleset) => {
   const zoneMessage = zone ? `zone ${zone}` : 'all zones';
   info(`Fetching waf ruleset for ${zoneMessage}`);
-  const token = apiToken();
-  const zones = () => (zone ? zoneInfo(zone) : zoneList());
+  const zones = zoneInfo(zone);
   const rulesetQuery = (await zones()).map(async (z) => {
     const zoneId = (await z).id;
     const zoneName = (await z).name;
@@ -37,7 +37,6 @@ const wafRulesetRules: (
 ) => Promise<any> = async (zone, ruleset) => {
   const zoneMessage = zone ? `zone ${zone}` : 'all zones';
   info(`Fetching waf rules for ${zoneMessage}`);
-  const token = apiToken();
   const rulesets = await wafRulesetList(zone, ruleset);
   const ruleQuery = rulesets.map(async (z) => {
     const zoneId = (await z).zone_id;
