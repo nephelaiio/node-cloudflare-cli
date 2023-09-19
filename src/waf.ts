@@ -14,8 +14,8 @@ const wafRulesetList: (
 ) => Promise<any> = async (zone, ruleset) => {
   const zoneMessage = zone ? `zone ${zone}` : 'all zones';
   info(`Fetching waf ruleset for ${zoneMessage}`);
-  const zones = zoneInfo(zone);
-  const rulesetQuery = (await zones()).map(async (z) => {
+  const zones = await zoneInfo(zone);
+  const rulesetQuery = zones.map(async (z) => {
     const zoneId = (await z).id;
     const zoneName = (await z).name;
     const addZoneInfo = (p: any) => ({

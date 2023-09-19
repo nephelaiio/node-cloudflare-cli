@@ -62,6 +62,7 @@ check_help: ${BUNDLE}
 
 check_run: ${BUNDLE}
 	diff <(make --no-print-directory run -- zone list --verbose | jq '. | length > 0') <(echo true)
+	diff <(make --no-print-directory run -- waf ruleset list --verbose | jq '. | length > 0') <(echo true)
 
 run:
 	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
