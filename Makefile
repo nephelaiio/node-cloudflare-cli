@@ -61,7 +61,8 @@ check_help: ${BUNDLE}
 	make --no-print-directory run -- waf package rules --help 2>&1 >/dev/null
 
 check_run: ${BUNDLE}
-	diff <(make --no-print-directory run -- zone list --verbose | jq '. | length > 0') <(echo true)
+	diff <(make --no-print-directory run -- waf ruleset list -vv | jq '. | length > 0') <(echo true)
+	diff <(make --no-print-directory run -- zone list -vv | jq '. | length > 0') <(echo true)
 
 run:
 	@${BUNDLE} $(filter-out run,$(MAKECMDGOALS))
