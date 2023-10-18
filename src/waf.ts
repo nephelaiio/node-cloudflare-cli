@@ -31,6 +31,7 @@ const wafRulesetList: (
     ruleset ? rulesetList.filter((r) => r.phase == ruleset) : rulesetList;
   return rulesets();
 };
+
 const wafRulesetRules: (
   zone: string | null,
   ruleset: string
@@ -48,7 +49,8 @@ const wafRulesetRules: (
     });
     const path = `/zones/${zoneId}/rulesets/phases/${ruleset}/entrypoint?per_page=50`;
     const result = (await api({ token, path })).result;
-    return result.rules.map(addZoneInfo);
+    const rules = (x) => ('rules' in result && result.rules) || [];
+    return rules(result).map(addZoneInfo);
   });
   const rules = (await Promise.all(ruleQuery)).flat();
   return rules;
